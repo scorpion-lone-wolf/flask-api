@@ -27,4 +27,4 @@ def register_error_handler(app: Flask):
 
     @app.errorhandler(Exception)
     def handle_general_error(error: Exception):
-        return {"status": "fail", "message": error.message}, error.status_code
+        return {"status": "fail", "message": "Something went wrong"}, 400

@@ -24,7 +24,11 @@ def get_users_route():
 def create_user_route():
     request_data = request.get_json()
     # creating User type object
-    user = User(name=request_data["name"], email=request_data["email"])
+    user = User(
+        name=request_data["name"],
+        email=request_data["email"],
+        password_hash=request_data["password"],
+    )
 
     # try:
     CreateUserSchema.model_validate(request_data)
