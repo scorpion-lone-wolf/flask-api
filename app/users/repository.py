@@ -2,7 +2,7 @@ from app.extensions import db
 from app.users.models import User
 
 
-def get_all_users():
+def get_users_repository():
     page = 1
     limit_per_page = 10
     skip = (page - 1) * 10
@@ -14,7 +14,7 @@ def get_all_users():
     return list(users)
 
 
-def create_user(user: User):
+def create_user_repository(user: User):
     db.session.add(user)
     db.session.commit()
     return user
