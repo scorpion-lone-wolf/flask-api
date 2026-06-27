@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from app.error import AppError
 from pydantic import ValidationError
 from app.users.schemas import CreateUserSchema
@@ -11,6 +12,7 @@ user_dp = Blueprint("users", __name__, url_prefix="/api/users")
 
 
 @user_dp.get("/")
+@jwt_required()
 def get_users_route():
     users = get_users_service()
     data = [
