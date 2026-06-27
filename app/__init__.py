@@ -1,3 +1,4 @@
+from app.extensions import jwt
 from app.auth.routes import auth_bp
 from app.error import register_error_handler
 from app.users import user_dp
@@ -16,6 +17,9 @@ def create_app():
     db.init_app(app)
     # migration initialization with app and db (this will help in db migrations)
     migrate.init_app(app, db)
+
+    # jwt initialization with app
+    jwt.init_app(app)
 
     # we import the models here so that sqlalchemy knows they exist
     # if we don't import the model files will not run and the db will not be created

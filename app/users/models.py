@@ -1,4 +1,5 @@
 # from sqlalchemy import Uuid
+from sqlalchemy.orm import deferred
 from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
@@ -14,7 +15,9 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         db.String(255), nullable=False, unique=True, index=True
     )
-    password_hash: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    password_hash: Mapped[str] = deferred(
+        mapped_column(db.String(255), nullable=False)
+    )  # deferred means that it will not be loaded from the database
     role: Mapped[str] = mapped_column(db.String(10), nullable=False, default="user")
     is_active: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=True)
 

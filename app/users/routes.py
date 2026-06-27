@@ -13,7 +13,16 @@ user_dp = Blueprint("users", __name__, url_prefix="/api/users")
 @user_dp.get("/")
 def get_users_route():
     users = get_users_service()
-    data = [{"id": user.id, "name": user.name, "email": user.email} for user in users]
+    data = [
+        {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role,
+            "is_active": user.is_active,
+        }
+        for user in users
+    ]
     return {
         "status": "ok",
         "data": data,

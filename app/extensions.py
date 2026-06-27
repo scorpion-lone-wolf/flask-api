@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 
 
 #  This is just the base class from which all models inherit
@@ -15,3 +16,4 @@ class Base(DeclarativeBase):
 #   db.session to save the data to the database
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
+jwt = JWTManager()
