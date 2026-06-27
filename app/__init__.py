@@ -1,3 +1,4 @@
+from app.auth.routes import auth_bp
 from app.error import register_error_handler
 from app.users import user_dp
 from app.extensions import db, migrate
@@ -24,6 +25,7 @@ def create_app():
 
     # register the blueprint(routes)
     app.register_blueprint(user_dp)
+    app.register_blueprint(auth_bp)
 
     # register error handlers
     register_error_handler(app)

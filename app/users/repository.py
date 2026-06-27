@@ -2,6 +2,7 @@ from app.extensions import db
 from app.users.models import User
 
 
+# responsible for interacting with the database to get all users
 def get_users_repository():
     page = 1
     limit_per_page = 10
@@ -14,14 +15,14 @@ def get_users_repository():
     return list(users)
 
 
-def check_email_repository(email: str):
+# responsible for interacting with the database to validate email exist or no
+def get_user_by_email_repository(email: str):
     statement = db.select(User).where(User.email == email)
-    user = db.session.execute(statement).scalars().all()
-    if len(user) > 0:
-        return True
-    return False
+    user = db.session.execute(statement).scalars().first()
+    return user
 
 
+# responsible for interacting with the database to create a new user
 def create_user_repository(user: User):
     db.session.add(user)
     db.session.commit()

@@ -25,6 +25,10 @@ def register_error_handler(app: Flask):
     def handle_validation_error(error: ValidationError):
         return {"status": "fail", "message": error.errors()[0].get("msg")}, 400
 
+    @app.errorhandler(ValueError)
+    def handle_value_error(error: ValueError):
+        return {"status": "fail", "message": error.errors()[0].get("msg")}, 400
+
     @app.errorhandler(Exception)
     def handle_general_error(error: Exception):
         return {"status": "fail", "message": "Something went wrong"}, 400

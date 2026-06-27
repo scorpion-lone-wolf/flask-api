@@ -18,34 +18,3 @@ def get_users_route():
         "status": "ok",
         "data": data,
     }
-
-
-@user_dp.post("/")
-def create_user_route():
-    request_data = request.get_json()
-    # creating User type object
-    user = User(
-        name=request_data["name"],
-        email=request_data["email"],
-        password_hash=request_data["password"],
-    )
-
-    # try:
-    CreateUserSchema.model_validate(request_data)
-    created_user = create_user_service(user)
-    # except ValidationError as e:
-    #     return {"status": "fail", "message": e.errors()}, 400
-    # except AppError as e:
-    #     return {"status": "fail", "message": e.message}, e.status_code
-
-    return {
-        "status": "ok",
-        "message": "User created successfully",
-        "data": [
-            {
-                "id": created_user.id,
-                "name": created_user.name,
-                "email": created_user.email,
-            },
-        ],
-    }, 201
