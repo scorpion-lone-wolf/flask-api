@@ -1,3 +1,4 @@
+from app.users.service import get_user_by_id_service
 from flask_jwt_extended import create_access_token
 from app.common.security import validate_password
 from app.users.service import create_user_service, get_user_by_email_service
@@ -25,6 +26,10 @@ def login_service(email: str, password: str):
     token = create_access_token(
         identity=str(user.id),
         additional_claims={"role": user.role, "email": user.email},
-        expires_delta=timedelta(minutes=1),
+        expires_delta=timedelta(minutes=15),
     )
     return token
+
+
+def get_user_service(user_id: int):
+    return get_user_by_id_service(id=user_id)

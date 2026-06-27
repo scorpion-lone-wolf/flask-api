@@ -1,3 +1,4 @@
+from app.users.repository import get_user_by_id_repository
 from app.users.repository import create_user_repository
 from app.common.security import generate_hash_password
 from app.users.repository import get_user_by_email_repository
@@ -18,3 +19,7 @@ def create_user_service(email: str, name: str, password: str):
     password_hash = generate_hash_password(password)
     user = User(email=email, name=name, password_hash=password_hash)
     return create_user_repository(user)
+
+
+def get_user_by_id_service(id: int):
+    return get_user_by_id_repository(id=id)

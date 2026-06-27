@@ -27,3 +27,9 @@ def create_user_repository(user: User):
     db.session.add(user)
     db.session.commit()
     return user
+
+
+def get_user_by_id_repository(id: int):
+    statement = db.select(User).where(User.id == id)
+    user = db.session.execute(statement).scalars().first()
+    return user

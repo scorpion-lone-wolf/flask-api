@@ -1,3 +1,6 @@
+from app.auth.service import get_user_service
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
 from app.auth.service import login_service
 from app.auth.service import register_service
 from app.auth.schemas import RegisterSchema, LoginSchema
@@ -31,5 +34,22 @@ def login_user_route():
         "data": {
             "message": "Login successful",
             "access_token": token,
+        },
+    }
+
+
+@auth_bp.get("/me")
+@jwt_required()
+def me():
+    user_id = get_jwt_identity()
+    # get_user_service
+    user = get_user_service(user_id)
+    return {
+        "status": "ok",
+        "data": {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role,
         },
     }
