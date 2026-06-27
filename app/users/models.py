@@ -1,6 +1,7 @@
 # from sqlalchemy import Uuid
 from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column
+from datetime import datetime
 
 # import uuid
 
@@ -12,4 +13,14 @@ class User(db.Model):
     name: Mapped[str] = mapped_column(db.String(255), nullable=False)
     email: Mapped[str] = mapped_column(
         db.String(255), nullable=False, unique=True, index=True
+    )
+    password_hash: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    role: Mapped[str] = mapped_column(db.String(10), nullable=False, default="user")
+    is_active: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=True)
+
+    # Set automatically on creation
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    # Set automatically on creation and updated on every modification
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
     )
