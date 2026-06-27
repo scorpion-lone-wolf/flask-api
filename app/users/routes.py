@@ -1,3 +1,4 @@
+from app.users.schemas import CreateUserSchema
 from app.users.service import create_user_service
 from app.users.models import User
 from flask import request
@@ -20,22 +21,30 @@ def get_users_route():
 
 @user_dp.post("/")
 def create_user_route():
-    # get data from body of the request
     request_data = request.get_json()
+    try:
+        CreateUserSchema.model_validate(request_data)
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 400
+
+    # get data from body of the request
     name = request_data["name"]
     email = request_data["email"]
     # creating User type object
     user = User(name=name, email=email)
     # call the service file and return the response
-    created_user = create_user_service(user)
-    return {
-        "status": "ok",
-        "message": "User created successfully",
-        "data": [
-            {
-                "id": created_user.id,
-                "name": created_user.name,
-                "email": created_user.email,
-            },
-        ],
-    }, 201
+    try:
+        created_user = create_user_service(user)
+        return {
+            "status": "ok",
+            "message": "User created successfully",
+            "data": [
+                {
+                    "id": created_user.id,
+                    "name": created_user.name,
+                    "email": created_user.email,
+                },
+            ],
+        }, 201
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 400
