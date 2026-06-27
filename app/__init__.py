@@ -1,3 +1,4 @@
+from app.error import register_error_handler
 from app.users import user_dp
 from app.extensions import db, migrate
 from app.config.config import Config
@@ -23,6 +24,9 @@ def create_app():
 
     # register the blueprint(routes)
     app.register_blueprint(user_dp)
+
+    # register error handlers
+    register_error_handler(app)
 
     @app.route("/")
     def health():

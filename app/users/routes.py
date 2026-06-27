@@ -1,3 +1,5 @@
+from app.error import AppError
+from pydantic import ValidationError
 from app.users.schemas import CreateUserSchema
 from app.users.service import create_user_service, get_users_service
 from app.users.models import User
@@ -21,29 +23,25 @@ def get_users_route():
 @user_dp.post("/")
 def create_user_route():
     request_data = request.get_json()
-    try:
-        CreateUserSchema.model_validate(request_data)
-    except Exception as e:
-        return {"status": "error", "message": str(e)}, 400
-
-    # get data from body of the request
-    name = request_data["name"]
-    email = request_data["email"]
     # creating User type object
-    user = User(name=name, email=email)
-    # call the service file and return the response
-    try:
-        created_user = create_user_service(user)
-        return {
-            "status": "ok",
-            "message": "User created successfully",
-            "data": [
-                {
-                    "id": created_user.id,
-                    "name": created_user.name,
-                    "email": created_user.email,
-                },
-            ],
-        }, 201
-    except Exception as e:
-        return {"status": "error", "message": str(e)}, 400
+    user = User(name=request_data["name"], email=request_data["email"])
+
+    # try:
+    CreateUserSchema.model_validate(request_data)
+    created_user = create_user_service(user)
+    # except ValidationError as e:
+    #     return {"status": "fail", "message": e.errors()}, 400
+    # except AppError as e:
+    #     return {"status": "fail", "message": e.message}, e.status_code
+
+    return {
+        "status": "ok",
+        "message": "User created successfully",
+        "data": [
+            {
+                "id": created_user.id,
+                "name": created_user.name,
+                "email": created_user.email,
+            },
+        ],
+    }, 201

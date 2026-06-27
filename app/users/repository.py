@@ -14,6 +14,14 @@ def get_users_repository():
     return list(users)
 
 
+def check_email_repository(email: str):
+    statement = db.select(User).where(User.email == email)
+    user = db.session.execute(statement).scalars().all()
+    if len(user) > 0:
+        return True
+    return False
+
+
 def create_user_repository(user: User):
     db.session.add(user)
     db.session.commit()
