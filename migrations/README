@@ -1,0 +1,76 @@
+# Flask API Commands
+
+## Activate Virtual Environment
+
+```bash
+source .venv/bin/activate
+```
+
+Activates the local Python virtual environment so commands use this project's installed packages.
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Installs all Python packages listed in `requirements.txt`.
+
+## Run the App
+
+```bash
+flask --app wsgi run
+```
+
+Starts the Flask development server using `wsgi.py` as the app entry point.
+
+## Initialize Migrations
+
+```bash
+flask --app wsgi db init
+```
+
+Creates the `migrations/` folder for Alembic/Flask-Migrate.
+
+Run this only once when setting up migrations for the first time.
+
+## Generate a Migration
+
+```bash
+flask --app wsgi db migrate -m "create users table"
+```
+
+Creates a new migration file based on changes in SQLAlchemy models.
+
+This command only creates the migration file. It does not update the database.
+
+## Apply Migrations
+
+```bash
+flask --app wsgi db upgrade
+```
+
+Applies pending migration files to the database.
+
+Use this after generating or pulling new migrations.
+
+## Roll Back Last Migration
+
+```bash
+flask --app wsgi db downgrade
+```
+
+Reverts the most recent database migration.
+
+Use this carefully because it can remove tables, columns, or data depending on the migration.
+
+## Common Development Flow
+
+```bash
+source .venv/bin/activate
+flask --app wsgi db migrate -m "describe your model change"
+flask --app wsgi db upgrade
+flask --app wsgi run
+```
+
+This flow activates the environment, creates a migration, applies it to the database, and starts the app.
